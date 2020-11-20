@@ -40,7 +40,8 @@ public class Server {
             
             while(!messageIn.equals("exit")){
                 messageIn = dataInputStream.readUTF(); //get message from client
-                Answer answer = new Answer().getByKeyword(messageIn); //get data by
+                Answer answer = new Answer().getByKeyword(messageIn); //get answer from the database
+                dataOutputStream.writeUTF(answer.getAnswer());//send it to client
             }
         } catch (IOException e) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, e);
