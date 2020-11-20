@@ -52,6 +52,7 @@ public class Client extends javax.swing.JFrame {
         textLabelTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         textLabelTitle.setText("Chat Bot");
 
+        textAreaChat.setEditable(false);
         textAreaChat.setColumns(20);
         textAreaChat.setRows(5);
         scrollPaneChat.setViewportView(textAreaChat);
@@ -149,6 +150,7 @@ public class Client extends javax.swing.JFrame {
             
             while(!messageIn.equals("exit")){
                 messageIn = dataInputStream.readUTF();
+                textAreaChat.setText(messageIn);
             }
         } catch (IOException e) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, e);
@@ -161,7 +163,7 @@ public class Client extends javax.swing.JFrame {
     private javax.swing.JButton buttonSendChat;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JScrollPane scrollPaneChat;
-    private javax.swing.JTextArea textAreaChat;
+    private static javax.swing.JTextArea textAreaChat;
     private javax.swing.JTextField textFieldInputChat;
     private javax.swing.JLabel textLabelTitle;
     // End of variables declaration//GEN-END:variables
