@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * @author dharm
  */
 public class Client extends javax.swing.JFrame {
-    
+
     private static Socket socket;
     private static DataInputStream dataInputStream;
     private static DataOutputStream dataOutputStream;
@@ -28,6 +28,8 @@ public class Client extends javax.swing.JFrame {
      */
     public Client() {
         initComponents();
+//        String[] args={};
+//        Server.main(args);
     }
 
     /**
@@ -41,10 +43,10 @@ public class Client extends javax.swing.JFrame {
 
         textLabelTitle = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        scrollPaneChat = new javax.swing.JScrollPane();
-        textAreaChat = new javax.swing.JTextArea();
         textFieldInputChat = new javax.swing.JTextField();
         buttonSendChat = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextchat = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,17 +54,14 @@ public class Client extends javax.swing.JFrame {
         textLabelTitle.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         textLabelTitle.setText("Chat Bot");
 
-        textAreaChat.setEditable(false);
-        textAreaChat.setColumns(20);
-        textAreaChat.setRows(5);
-        scrollPaneChat.setViewportView(textAreaChat);
-
         buttonSendChat.setText("Send");
         buttonSendChat.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonSendChatActionPerformed(evt);
             }
         });
+
+        jScrollPane1.setViewportView(jTextchat);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -72,12 +71,13 @@ public class Client extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jSeparator1)
-                    .addComponent(scrollPaneChat, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(textFieldInputChat)
+                        .addComponent(textFieldInputChat, javax.swing.GroupLayout.DEFAULT_SIZE, 318, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonSendChat)))
+                        .addComponent(buttonSendChat))
+                    .addComponent(jScrollPane1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 1, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -86,10 +86,10 @@ public class Client extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(textLabelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrollPaneChat, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(textFieldInputChat)
                     .addComponent(buttonSendChat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -102,6 +102,11 @@ public class Client extends javax.swing.JFrame {
     private void buttonSendChatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSendChatActionPerformed
         // TODO add your handling code here:
         try {
+            if (jTextchat.getText().equalsIgnoreCase("")) {
+                jTextchat.setText(textFieldInputChat.getText());
+            } else {
+                jTextchat.setText(jTextchat.getText() + "\n" + textFieldInputChat.getText());
+            }
             dataOutputStream.writeUTF(textFieldInputChat.getText());
         } catch (IOException e) {
         }
@@ -140,30 +145,31 @@ public class Client extends javax.swing.JFrame {
                 new Client().setVisible(true);
             }
         });
-        
+
         try {
-            socket = new Socket(ChatbotConstant.LOCALHOST,ChatbotConstant.PORT_NUMBER);
+            socket = new Socket(ChatbotConstant.LOCALHOST, ChatbotConstant.PORT_NUMBER);
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            
+
             String messageIn = "";
-            
-            while(!messageIn.equals("exit")){
+
+            while (!messageIn.equals("exit")) {
                 messageIn = dataInputStream.readUTF();
-                textAreaChat.setText(messageIn);
+
+                jTextchat.setText(jTextchat.getText() + "\n" + messageIn);
+
             }
         } catch (IOException e) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-    
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonSendChat;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JScrollPane scrollPaneChat;
-    private static javax.swing.JTextArea textAreaChat;
+    private static javax.swing.JTextPane jTextchat;
     private javax.swing.JTextField textFieldInputChat;
     private javax.swing.JLabel textLabelTitle;
     // End of variables declaration//GEN-END:variables
