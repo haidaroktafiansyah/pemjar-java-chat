@@ -6,12 +6,16 @@
 package chatbot.application.client;
 
 import chatbot.application.utils.ChatbotConstant;
+import java.awt.Color;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 /**
  *
@@ -61,6 +65,7 @@ public class Client extends javax.swing.JFrame {
             }
         });
 
+        jTextchat.setEditable(false);
         jScrollPane1.setViewportView(jTextchat);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -102,11 +107,19 @@ public class Client extends javax.swing.JFrame {
     private void buttonSendChatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSendChatActionPerformed
         // TODO add your handling code here:
         try {
-            if (jTextchat.getText().equalsIgnoreCase("")) {
-                jTextchat.setText(textFieldInputChat.getText());
-            } else {
-                jTextchat.setText(jTextchat.getText() + "\n" + textFieldInputChat.getText());
+            StyledDocument doc = jTextchat.getStyledDocument();
+
+            SimpleAttributeSet left = new SimpleAttributeSet();
+            StyleConstants.setAlignment(left, StyleConstants.ALIGN_LEFT);
+            StyleConstants.setForeground(left, Color.BLUE);
+
+            try {
+                doc.insertString(doc.getLength(), "\n" + textFieldInputChat.getText(), left);
+                doc.setParagraphAttributes(doc.getLength(), 1, left, false);
+            } catch (Exception e) {
+                System.out.println(e);
             }
+
             dataOutputStream.writeUTF(textFieldInputChat.getText());
         } catch (IOException e) {
         }
@@ -156,8 +169,20 @@ public class Client extends javax.swing.JFrame {
             while (!messageIn.equals("exit")) {
                 messageIn = dataInputStream.readUTF();
 
-                jTextchat.setText(jTextchat.getText() + "\n" + messageIn);
+                StyledDocument doc = jTextchat.getStyledDocument();
 
+                SimpleAttributeSet right = new SimpleAttributeSet();
+                StyleConstants.setAlignment(right, StyleConstants.ALIGN_RIGHT);
+                StyleConstants.setForeground(right, Color.RED);
+
+                try {
+                    doc.insertString(doc.getLength(), "\n" + messageIn, right);
+                    doc.setParagraphAttributes(doc.getLength(), 1, right, false);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+
+//                jTextchat.setText(jTextchat.getText() + "\n" + messageIn);
             }
         } catch (IOException e) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, e);
