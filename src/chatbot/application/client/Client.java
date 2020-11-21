@@ -5,6 +5,7 @@
  */
 package chatbot.application.client;
 
+import chatbot.application.server.Server;
 import chatbot.application.utils.ChatbotConstant;
 import java.awt.Color;
 import java.io.DataInputStream;
@@ -32,8 +33,10 @@ public class Client extends javax.swing.JFrame {
      */
     public Client() {
         initComponents();
-//        String[] args={};
-//        Server.main(args);
+        
+        Server server = new Server();
+        server.start();
+        
     }
 
     /**
@@ -109,13 +112,13 @@ public class Client extends javax.swing.JFrame {
         try {
             StyledDocument doc = jTextchat.getStyledDocument();
 
-            SimpleAttributeSet left = new SimpleAttributeSet();
-            StyleConstants.setAlignment(left, StyleConstants.ALIGN_LEFT);
-            StyleConstants.setForeground(left, Color.BLUE);
+            SimpleAttributeSet right = new SimpleAttributeSet();
+            StyleConstants.setAlignment(right, StyleConstants.ALIGN_RIGHT);
+            StyleConstants.setForeground(right, Color.BLUE);
 
             try {
-                doc.insertString(doc.getLength(), "\n" + textFieldInputChat.getText(), left);
-                doc.setParagraphAttributes(doc.getLength(), 1, left, false);
+                doc.insertString(doc.getLength(), "\n" + textFieldInputChat.getText(), right);
+                doc.setParagraphAttributes(doc.getLength(), 1, right, false);
             } catch (Exception e) {
                 System.out.println(e);
             }
@@ -171,18 +174,17 @@ public class Client extends javax.swing.JFrame {
 
                 StyledDocument doc = jTextchat.getStyledDocument();
 
-                SimpleAttributeSet right = new SimpleAttributeSet();
-                StyleConstants.setAlignment(right, StyleConstants.ALIGN_RIGHT);
-                StyleConstants.setForeground(right, Color.RED);
+                SimpleAttributeSet left = new SimpleAttributeSet();
+                StyleConstants.setAlignment(left, StyleConstants.ALIGN_LEFT);
+                StyleConstants.setForeground(left, Color.RED);
 
                 try {
-                    doc.insertString(doc.getLength(), "\n" + messageIn, right);
-                    doc.setParagraphAttributes(doc.getLength(), 1, right, false);
+                    doc.insertString(doc.getLength(), "\n" + messageIn, left);
+                    doc.setParagraphAttributes(doc.getLength(), 1, left, false);
                 } catch (Exception e) {
                     System.out.println(e);
                 }
 
-//                jTextchat.setText(jTextchat.getText() + "\n" + messageIn);
             }
         } catch (IOException e) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, e);
