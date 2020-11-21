@@ -19,14 +19,15 @@ import java.util.logging.Logger;
  *
  * @author dharma
  */
-public class Server {
+public class Server extends Thread{
 
     private static ServerSocket serverSocket;
     private static Socket socket;
     private static DataInputStream dataInputStream;
     private static DataOutputStream dataOutputStream;
 
-    public static void main(String[] args) {
+    @Override
+    public void run() {
         String messageIn = "";
 
         try {
@@ -37,7 +38,8 @@ public class Server {
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
 
             System.out.println("Server is running");
-
+            
+            dataOutputStream.writeUTF("Hai selamat datang di chatbot, silahkan chat :D");
             
             while (!messageIn.equals("exit")) {
                 messageIn = dataInputStream.readUTF(); //get message from client
