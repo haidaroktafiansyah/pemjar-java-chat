@@ -1,7 +1,15 @@
 # pemjar-java-chat
 
-create chat bot using Mysql as database 
+create chat bot using Mysql as database and java ANT
 
+dont forget to import driver from my sql on : https://dev.mysql.com/downloads/connector/j/
+
+download:
+
+>![2](img/Screenshot_7.png)
+
+<br><br><br>
+# Run The app
 
 database setting
 >![2](img/Screenshot_1.png)
@@ -9,11 +17,10 @@ database setting
 coloumn on database
 >![2](img/Screenshot_2.png)
 
-run server first 
->![2](img/Screenshot_3.png)
-
-then run the client
+run the client directly 
 >![2](img/Screenshot_4.png)
 
-APP
+<br><br><br>
+# App
+
 >![2](img/Screenshot_5.png)
